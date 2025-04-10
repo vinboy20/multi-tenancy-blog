@@ -33,5 +33,41 @@ A secure multi-tenant blogging platform with user approval workflow, built with 
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/multi-tenant-blog.git
+   git clone https://github.com/vinboy20/multi-tenancy-blog.git
    cd multi-tenant-blog
+
+2. Install dependencies:
+	composer install
+
+3. Configure environment:
+	cp .env.example .env
+	php artisan key:generate
+
+4. Database setup:
+	php artisan migrate --seed
+
+5. Serve the application:
+	php artisan serve
+
+### Base URL
+	http://localhost:8000/api
+
+### Authentication
+
+### Endpoint	Method	Description
+	/register	POST	Register new user (pending)
+	/login	POST	Get JWT token
+	/logout	POST	Invalidate token
+
+### User Endpoints
+	Endpoint	Method	 Description
+	/posts |	GET |	List user's posts
+	/posts |	POST |	Create new post
+	/posts/{id} |	PUT |	Update post
+	/posts/{id}	| DELETE |	Delete post
+
+### Admin Endpoints
+	Endpoint	Method	  Description
+	/admin/pending-users  |	GET	 | List users pending approval
+	/admin/approve-user |	POST  |	Approve user & create tenant
+	/admin/all-posts |	GET	 | View posts across all tenants
