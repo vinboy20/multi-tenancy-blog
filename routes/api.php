@@ -6,9 +6,9 @@ use App\Http\Controllers\api\PostController;
 use App\Http\Controllers\api\admin\AuthController;
 use App\Http\Controllers\api\admin\AdminController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Route::get('/user', function (Request $request) {
+//     return $request->user();
+// })->middleware('auth:sanctum')->middleware('admin');
 
 Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
@@ -27,5 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/approve-user/{user}', [AdminController::class, 'approveUser'])->middleware('admin');
         Route::post('/reject-user/{user}', [AdminController::class, 'rejectUser'])->middleware('admin');
         Route::get('/all-posts', [AdminController::class, 'allPosts'])->middleware('admin');
+        Route::get('/all-user', [AdminController::class, 'allUser'])->middleware('admin');
+        
     });
 });

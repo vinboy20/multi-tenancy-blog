@@ -16,47 +16,15 @@ class PostController extends Controller
 
         if ($posts->isEmpty()) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'No posts found',
-                'data' => []
+                'status' => 'true',
+                'message' => 'You have no post yet.',
             ], 200);
         }
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $posts
-        ]);
+        return response()->json($posts, 200);
+
     }
 
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'title' => 'required|string|max:255',
-    //         'content' => 'required|string',
-    //     ]);
-
-    //     $userId = Auth::id();
-
-    //     $user = User::where('id', $userId)->first();
-    //     if (!$user) {
-    //         return response()->json(['message' => 'User not found'], 404);
-    //     }
-    //     // Check if the user is approved
-    //     if ($user->status !== User::STATUS_APPROVED) {
-    //         return response()->json(['message' => 'Your account is not approved yet'], 403);
-    //     }
-    //     // Create a new post
-
-    //     $post = Post::create([
-    //         'title' => $request->title,
-    //         'content' => $request->content,
-    //         'user_id' => Auth::id(),
-    //         // 'tenant_id' => Auth::user()->tenant_id,
-    //         'tenant_id' => $user->tenant_id,
-    //     ]);
-
-    //     return response()->json($post, 201);
-    // }
 
     public function store(Request $request)
     {
@@ -70,8 +38,8 @@ class PostController extends Controller
         // Check if the user is approved
         if ($user->status !== User::STATUS_APPROVED) {
             return response()->json([
-                'message' => 'Your account is not approved yet',
-                'approval_pending' => true
+                'msg' => 'Your account is not approved yet',
+                'status' => 403,
             ], 403);
         }
 
@@ -83,10 +51,11 @@ class PostController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Post created successfully',
+            'msg' => 'Post created successfully',
             'post' => $post,
+            'status' => 200,
             'author' => $user->only(['id', 'name', 'email'])
-        ], 201);
+        ]);
     }
 
     public function show($id)
@@ -105,8 +74,14 @@ class PostController extends Controller
         ]);
 
         $post->update($request->all());
+        return response()->json([
+            'msg' => 'Post updated successfully',
+            'post' => $post,
+            'status' => 200,
+            
+        ]);
 
-        return response()->json($post);
+        // return response()->json($post);
     }
 
     public function destroy($id)
@@ -143,7 +118,8 @@ class PostController extends Controller
             // Attempt deletion
             if ($post->delete()) {
                 return response()->json([
-                    'message' => 'Post deleted successfully',
+                    'status' => 200,
+                    'msg' => 'Post deleted successfully',
                     'deleted_post' => $id,
                     'timestamp' => now()->toDateTimeString()
                 ]);

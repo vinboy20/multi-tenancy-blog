@@ -13,6 +13,12 @@ class AdminController extends Controller
 {
     // This controller is for admin functionalities
     // such as approving or rejecting users, and viewing all posts.
+
+    public function allUser()
+    {
+        $users = User::where('is_admin', false)->get();
+        return response()->json($users);
+    }
     public function pendingUsers()
     {
         $users = User::where('status', User::STATUS_PENDING)->get();
@@ -24,7 +30,7 @@ class AdminController extends Controller
 
         $user = User::findOrFail($userId);
 
-        // Generate a clean subdomain from the user's name
+        // Generate a clean subdomain from the user's email
         // Extract the part before @ in email
         $subdomain = Str::slug(explode('@', $user->email)[0]); // john.doe@company.com → john-doe
         // $subdomain = Str::slug($user->email); // Converts "John Doe" to "john-doe"
@@ -51,7 +57,8 @@ class AdminController extends Controller
             'message' => 'User approved. Access at: ' . $domain->domain,
             'user' => $user,
             'tenant' => $tenant,
-            'domain' => $domain,
+            'domain' => $domain->domain,
+            'status' => 200
         ]);
     }
 
@@ -72,7 +79,6 @@ class AdminController extends Controller
         foreach ($tenants as $tenant) {
             $posts = $posts->merge($tenant->posts);
         }
-
         return response()->json($posts);
     }
 }

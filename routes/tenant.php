@@ -30,7 +30,7 @@ Route::middleware([
     Route::get('/', function () {
         return view('tenancy', [
             'tenantId' => tenant('id'),
-            'tenant' => Tenant::current() // Full tenant model if needed
+            // 'tenant' => Tenant::current() // Full tenant model if needed
         ]);
     });
 });
