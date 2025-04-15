@@ -42,7 +42,7 @@ class AuthController extends Controller
                 'status' => 200,
                 "msg" => 'User registered successfully. Waiting for admin approval.',
                 // 'token' => $token,
-                'user' => $userdata,
+                'user' => $user,
             ]
         );
     }
