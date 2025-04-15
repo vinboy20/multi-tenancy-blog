@@ -41,6 +41,7 @@ A secure multi-tenant blogging platform with user approval workflow, built with 
 
 3. Configure environment:
 	cp .env.example .env
+	
 	php artisan key:generate
 
 4. Database setup:
